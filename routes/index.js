@@ -1,9 +1,8 @@
 import { Router } from 'express';
-var router = Router();
+import Controller from '../controller/configController';
+const router = Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+/* route */
+router.post('/start', Controller.login);
 
 export default router;
