@@ -3,6 +3,7 @@ import express, { json, urlencoded } from 'express';
 import logger from 'morgan';
 
 import indexRouter from './routes/index';
+import questionRouter from './routes/question';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(urlencoded({ extended: false }));
 
 // route
 app.use('/api/v1/', indexRouter);
+app.use('/api/v1/question', questionRouter)
 
 // entry point
 app.get('/', (req, res)=>{
