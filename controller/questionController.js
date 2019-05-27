@@ -85,7 +85,7 @@ class Question{
            if(!response){
                return res.status(404).json({
                    status: 404,
-                   error: 'Sorry! question not found, please ensure to enter the correct required details'
+                   error: 'Sorry! question not found, please ensure to enter the correct detials'
                })
            }
         })

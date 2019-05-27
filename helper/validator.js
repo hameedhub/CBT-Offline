@@ -28,6 +28,17 @@ class Validator {
         })
         return Joi.validate(data, schema);
     }
+    static sessionLogin(data){
+        const schema = Joi.object().keys({
+            studentId: Joi.string().required(),
+            name: Joi.string(),
+            subject: Joi.string().required(),
+            class: Joi.required(),
+            term : Joi.string().required(),
+            date : Joi.string().required()
+        })
+        return Joi.validate(data, schema);
+    }
 }
 
 export default Validator;
