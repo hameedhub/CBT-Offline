@@ -57,6 +57,50 @@ class Question{
         })
     }
     }
+    /**
+     * view questions
+     * @param { object } req request
+     * @param { object } res response
+     */
+    static async viewQuestion(req, res){
+        // get data
+        try{
+        const details ={
+            date: req.body.date,
+            subject: req.body.subject,
+            class: req.body.class,
+            term: req.body.term
+        }
+        // validate data
+        const validateDetials = validate.viewQuestion(details);
+        if(validateDetials.error){
+            return res.status(422).json({
+                status: 422,
+                error: validateDetials.error.details[0].message
+            })
+        }
+        // check for question file
+        const questionFile = `c:/temp/exam/${req.body.date.trim().replace(/\s/g, "")}/${req.body.subject.trim().replace(/\s/g, "")}/${req.body.class.replace(/\s/g, "")}_${req.body.term.trim().replace(/\s/g, "")}.json`;
+        await fs.readJSON(questionFile, (error, response)=>{
+           if(!response){
+               return res.status(404).json({
+                   status: 404,
+                   error: 'Sorry! question not found, please ensure to enter the correct required details'
+               })
+           }
+        })
+        const question = await fs.readJSON(questionFile);
+        return res.status(200).json({
+            status: 200,
+            question
+        })
+        }catch(error){
+            res.status(500).json({
+                status: 500,
+                error
+            })
+        }
+    }
 
 }
 
