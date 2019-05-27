@@ -4,6 +4,7 @@ import logger from 'morgan';
 
 import indexRouter from './routes/index';
 import questionRouter from './routes/question';
+import sessionRouter from './routes/session';
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(urlencoded({ extended: false }));
 // route
 app.use('/api/v1/', indexRouter);
 app.use('/api/v1/question', questionRouter)
-
+app.use('/api/v1/session', sessionRouter)
 // entry point
 app.get('/', (req, res)=>{
   res.status(200).json({
