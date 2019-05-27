@@ -19,6 +19,15 @@ class Validator {
         })
         return Joi.validate(data, schema);
     }
+    static viewQuestion(data){
+        const schema = Joi.object().keys({
+            subject: Joi.string().required(),
+            class: Joi.required(),
+            term : Joi.string().required(),
+            date : Joi.required()
+        })
+        return Joi.validate(data, schema);
+    }
 }
 
 export default Validator;

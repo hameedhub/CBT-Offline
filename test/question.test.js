@@ -1,6 +1,8 @@
 import chai, { expect } from 'chai';
 import app from '../app';
 import chaiHttp from 'chai-http';
+import '@babel/polyfill';
+chai.use(chaiHttp);
 
 /**
  * test for question
@@ -49,22 +51,56 @@ describe('Question Entry Point', ()=>{
             done();
         })
     })
-    it('should return error if date not matching any dir', ()=>{
+    it('should return error if date not define', (done)=>{
         chai.request(app)
         .post('/api/v1/question')
         .send({
             subject: "test",
             class: "test1",
             term: "test",
-            date: "0",
             questions: [{test: "test"}]
         })
         .end((err, res)=>{
             expect(res.body).to.be.an('object');
-            expect(res).to.have.status(404);
-            expect(res.body).to.have.property('status')
+            expect(res).to.have.status(422);
+            expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('error');
             done();
         })
     })
+    it('should be able to view question', (done)=>{
+        chai.request(app)
+        .post('/api/v1/question/view')
+        .send({
+            subject: "test",
+            class: "test1",
+            term: "test",
+            date: "00-00-00"
+        })
+        .end((err, res)=>{
+            expect(res.body).to.be.an('object');
+            expect(res).to.have.status(200);
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('question');
+            done();
+        })
+    })
+    it('should be return error if file not found', (done)=>{
+        chai.request(app)
+        .post('/api/v1/question/view')
+        .send({
+            subject: "test",
+            class: "test0",
+            term: "test0",
+            date: "00-00-00"
+        })
+        .end((err, res)=>{
+            expect(res.body).to.be.an('object');
+            expect(res).to.have.status(404);
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('error');
+            done();
+        })
+    })
+
 })
