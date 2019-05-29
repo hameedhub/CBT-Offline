@@ -67,7 +67,6 @@ class Session {
         if(checkContent < 1){
             await fs.copyFileSync(questionFile, studentCopy);
         }
-        //const studentQuestion = await fs.readJSONSync(studentCopy);
         const token = jwt.sign({'student':details, 'questionPath': studentCopy, 'login':'true'}, process.env.TOKEN);
         return res.status(201).json({
             status: 201,
@@ -77,6 +76,58 @@ class Session {
         } catch(error){
            console.log(error);
         }
+    }
+    static async answerQuestion(req, res){
+    try{
+    const checkDate = await check.file(req.userData.questionPath);
+        if(!checkDate){
+           return res.status(404).json({
+                status: 404,
+                error: `Sorry incorrect or deleted question file`
+            })
+        }
+    const answer = { studentAnswer: req.body.studentAnswer};
+    const questionIndex = req.params.num;
+    let studentQuestion = await fs.readJSONSync(req.userData.questionPath);
+    let questionNumber = await studentQuestion.find(question=> question.num === questionIndex);
+    const selectedOption = await Object.assign(questionNumber, answer);
+    questionNumber = selectedOption;
+    await fs.writeJson(req.userData.questionPath, studentQuestion);
+    return res.status(200).json({
+        status: 200,
+        answer: questionNumber,
+        userData: req.userData
+    })
+    }catch(error){
+        return res.status(500).json({
+            status: 500,
+            errror: 'Something went wrong'
+        })
+    }     
+    }
+    static async getQuestionByNum(req, res){
+        try{
+            const checkDate = await check.file(req.userData.questionPath);
+                if(!checkDate){
+                   return res.status(404).json({
+                        status: 404,
+                        error: `Sorry incorrect or deleted question file`
+                    })
+                }
+            const questionIndex = req.params.num;
+            let studentQuestion = await fs.readJSONSync(req.userData.questionPath);
+            let questionNumber = await studentQuestion.find(question=> question.num === questionIndex);
+            return res.status(200).json({
+                status: 200,
+                answer: questionNumber,
+                userData: req.userData
+            })
+            }catch(error){
+                return res.status(500).json({
+                    status: 500,
+                    errror: 'Something went wrong'
+                })
+            }     
     }
 }
 export default Session;
