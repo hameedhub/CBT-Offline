@@ -34,7 +34,7 @@ class Session {
             })
         }
         // check date directory
-        const dir = `c:/temp/exam/${req.params.date.trim().replace(/\s/g, "")}`;
+        const dir = `exam/${req.params.date.trim().replace(/\s/g, "")}`;
         const checkDate = await check.folder(dir);
         if(!checkDate){
            return res.status(404).json({

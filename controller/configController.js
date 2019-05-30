@@ -47,7 +47,7 @@ class Config {
             })
         }
         // directory path for exam offline storage
-        const dir = `c:/temp/exam/${req.body.date.trim().replace(/\s/g, "")}`;
+        const dir = `exam/${req.body.date.trim().replace(/\s/g, "")}`;
         // creating a directory structure
         await fs.ensureDir(dir);
         // return 

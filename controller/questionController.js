@@ -27,7 +27,7 @@ class Question{
             error: validation.error.details[0].message
         })
     }
-    const dir = `c:/temp/exam/${req.body.date.trim().replace(/\s/g, "")}`;
+    const dir = `exam/${req.body.date.trim().replace(/\s/g, "")}`;
     // check if directory exist
      await fs.readdir(dir, (error, response)=>{
         if(!response){
@@ -80,7 +80,7 @@ class Question{
             })
         }
         // check for question file
-        const questionFile = `c:/temp/exam/${req.body.date.trim().replace(/\s/g, "")}/${req.body.subject.trim().replace(/\s/g, "")}/${req.body.class.replace(/\s/g, "")}_${req.body.term.trim().replace(/\s/g, "")}.json`;
+        const questionFile = `exam/${req.body.date.trim().replace(/\s/g, "")}/${req.body.subject.trim().replace(/\s/g, "")}/${req.body.class.replace(/\s/g, "")}_${req.body.term.trim().replace(/\s/g, "")}.json`;
         await fs.readJSON(questionFile, (error, response)=>{
            if(!response){
                return res.status(404).json({
